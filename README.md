@@ -39,5 +39,7 @@ run command
 run command
 
     a.java systemA/DoorSensor
+    
     b.java systemA/MotionSensor
+    
     c.java systemA/WindowSensor
