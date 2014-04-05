@@ -1,4 +1,7 @@
 package systemB;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import Configuration.Configuration;
 import InstrumentationPackage.*;
 import MessagePackage.Message;
@@ -7,17 +10,25 @@ import MessagePackage.MessageQueue;
 
 
 public class SprinklerController {
+	
+	private static Timer timer;
+	private static MessageManagerInterface em = null;	// Interface object to the message manager
+	private static int SprinklerState = 0;  //1-on, 2-ready, 0-off
+	
 	public static void main(String args[])
 	{
 		String MsgMgrIP;				// Message Manager IP address
 		Message Msg = null;					// Message object
 		MessageQueue eq = null;				// Message Queue
-		MessageManagerInterface em = null;	// Interface object to the message manager
 		
-		int SprinklerState = 0;  //1-on, 2-ready, 0-off
+		
 		int	Delay = 2500;				// The loop delay (2.5 seconds)
+		
+		
 		boolean Done = false;			// Loop termination flag
 		boolean isArmed = false;
+		
+		timer = new Timer();
 
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
@@ -88,7 +99,7 @@ public class SprinklerController {
 			
 			// Put the status indicators under the panel...
 			
-			Indicator SprinklerIndicator = new Indicator ("Sprinkler OFF", mw.GetX(), mw.GetY()+mw.Height());
+			Indicator SprinklerIndicator = new Indicator ("Sprinkler OFF", mw.GetX()+mw.Width(), mw.GetY()+mw.Height()/2);
 
 			mw.WriteMessage("Registered with the message manager." );
 
@@ -113,9 +124,6 @@ public class SprinklerController {
 			{
 
 				
-				
-				
-				
 				try
 				{
 					eq = em.GetMessageQueue();
@@ -139,7 +147,7 @@ public class SprinklerController {
 					{
 						if (Msg.GetMessage().equalsIgnoreCase("S1")) 
 						{
-							if (SprinklerState==0) {
+							if (SprinklerState!=1) {
 								SprinklerState = 1;
 								mw.WriteMessage("Received turn sprinkler on message" );
 							}
@@ -164,8 +172,6 @@ public class SprinklerController {
 								mw.WriteMessage("Received  sprinker ready message" );
 							}
 							
-							
-							
 						} // if
 
 					} // if
@@ -175,6 +181,8 @@ public class SprinklerController {
 						mw.WriteMessage("Received "+Msg.GetMessage()+" Alarm");
 						if(Msg.GetMessage().equals("Smoke")) {
 							postMessage(em, "S2");	
+							
+							timer.schedule(new TimerTestTask(), 10*1000);
 						}
 						
 					}
@@ -235,24 +243,19 @@ public class SprinklerController {
 					if (isArmed)
 					// Set to black, heater is off
 					SprinklerIndicator.SetLampColorAndMessage("Sprinkler OFF", 0);
+					
 
 				} // if
 				 else if (SprinklerState==2){
 					 if (isArmed)
 					// Set to black, heater is off
-					SprinklerIndicator.SetLampColorAndMessage("Sprinkler READY",2);
-					 try
-						{
-							
-							Thread.sleep( 10000 );
-
-						} // try
-						catch( Exception e )
-						{
-							System.out.println( "Sleep error:: " + e );
-
-						} // catch
-						postMessage(em, "S1");
+					 {
+						 SprinklerIndicator.SetLampColorAndMessage("Sprinkler READY",2);
+						
+						
+					 }
+					
+					
 	
 				} // if
 
@@ -283,18 +286,29 @@ public class SprinklerController {
 
 	} // main
 	
-	static private void postMessage(MessageManagerInterface ei, String m ){
+	static private void postMessage(MessageManagerInterface mi, String m ){
 		// Here we create the message.
 		Message msg = new Message( Configuration.SPRINKLER_CONTROLLER_ID, m );
 		// Here we send the message to the message manager.
 		try{
-			ei.SendMessage( msg );
+			mi.SendMessage( msg );
 		} // try
 		catch (Exception e){
 			System.out.println("Error posting Message:: " + e);
 		} // catch
 	} // PostMessage
+	
+	static class TimerTestTask extends TimerTask
+	{
+		public void run() {
+			Message msg;
+			if (SprinklerState==2) 
+					postMessage(em, "S1");	
+			//System.out.println("timer");
+			
+		}	
+	}
 
 } // SprinklerController
 
-
+				

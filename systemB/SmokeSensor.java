@@ -35,7 +35,7 @@ class SmokeSensor
 			}
 		});
 		JFrame buttonFrame = new JFrame();
-		buttonFrame.setBounds(mw.GetX(), mw.GetY(), 50, 80);
+		buttonFrame.setBounds(mw.GetX()+mw.Width(), mw.GetY(), 50, 80);
 		JPanel buttonPanel = new JPanel();
 		buttonFrame.add(buttonPanel);
 		buttonPanel.add(button);
@@ -108,9 +108,9 @@ class SmokeSensor
 
  		if (em != null)
 		{
-			float WinPosX = 0.5f; 	//This is the X position of the message window in terms
+			float WinPosX = 0.0f; 	//This is the X position of the message window in terms
 			//of a percentage of the screen height
-			float WinPosY = 0.60f;	//This is the Y position of the message window in terms
+			float WinPosY = 0.70f;	//This is the Y position of the message window in terms
 			//of a percentage of the screen height
 
 			SmokeSensor sensor = new SmokeSensor("Smoke Sensor", WinPosX, WinPosY, em);

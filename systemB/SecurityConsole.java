@@ -3,7 +3,18 @@ package systemB;
 import MessagePackage.Message;
 import TermioPackage.Termio;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+
 public class SecurityConsole {
+	
+	
+	
+	
 	public static void main(String args[])
 	{
     	Termio UserInput = new Termio();	// Termio IO Object
@@ -11,8 +22,11 @@ public class SecurityConsole {
 		String Option = null;				// Menu choice from user
 		Message Msg = null;					// Message object
 		boolean Error = false;				// Error flag
-		SecurityMonitor Monitor = null;			// The environmental control system monitor
+		SecurityFireMonitor Monitor = null;			// The environmental control system monitor
 		boolean isArmed = false;
+		
+		int delay = 2500;
+		
 
 		/////////////////////////////////////////////////////////////////////////////////
 		// Get the IP address of the message manager
@@ -22,11 +36,11 @@ public class SecurityConsole {
  		{
 			// message manager is not on the local system
 
-			Monitor = new SecurityMonitor( args[0] );
+			Monitor = new SecurityFireMonitor( args[0] );
 
 		} else {
 
-			Monitor = new SecurityMonitor();
+			Monitor = new SecurityFireMonitor();
 
 		} // if
 
@@ -37,9 +51,14 @@ public class SecurityConsole {
 		if (Monitor.IsRegistered() )
 		{
 			Monitor.start(); // Here we start the monitoring and control thread
+			
+			ExecutorService service = Executors.newSingleThreadExecutor();
 
+			
 			while (!Done)
 			{
+				
+				
 				// Here, the main thread continues and provides the main menu
 
 				System.out.println( "\n\n\n\n" );
@@ -49,14 +68,18 @@ public class SecurityConsole {
 					System.out.println( "Using message manger at: " + args[0] + "\n" );
 				else
 					System.out.println( "Using local message manger \n" );
-
+				
+				
+				
 				System.out.println( "Select an Option: \n" );
 				System.out.println( "1: Arm the security system" );
 				System.out.println( "2: Disarm the security system" );
 				System.out.println( "-------------------------------");
-				System.out.println( "3: Disable Sprinkler" );
-				System.out.println( "4: Turn on Sprinkler" );
-				System.out.println( "-------------------------------");
+					System.out.println( "3: Turn off Sprinkler." );
+					System.out.println( "4: Confirm turn on Sprinkler" );
+					System.out.println( "-------------------------------");
+					
+			
 				System.out.println( "X: Stop System\n" );
 				System.out.print( "\n>>>> " );
 				Option = UserInput.KeyboardReadString();
@@ -75,14 +98,31 @@ public class SecurityConsole {
 				else if( Option.equalsIgnoreCase("3")){
 					if (isArmed) {
 						Monitor.setSprinkler(0);
+						System.out.println("Sprinkler if turned off");
 					}
 					else {
 						System.out.println("System is Disarmed");
 					}		
 				}
-				else if( Option.equalsIgnoreCase("4")){
+				else if( Option.equalsIgnoreCase("4") && Monitor.getSprinklerState()==2){
 					if (isArmed) {
-						Monitor.setSprinkler(1);
+						System.out.println("Sprinkler on action confirmed");
+					}
+					else {
+						System.out.println("System is Disarmed");
+					}		
+				}
+				else if( Option.equalsIgnoreCase("4") && Monitor.getSprinklerState()==1){
+					if (isArmed) {
+						System.out.println("Sprinkler is already on.");
+					}
+					else {
+						System.out.println("System is Disarmed");
+					}		
+				}
+				else if( Option.equalsIgnoreCase("4") && Monitor.getSprinklerState()==0){
+					if (isArmed) {
+						System.out.println("Sprinkler is off.");
 					}
 					else {
 						System.out.println("System is Disarmed");
@@ -98,6 +138,8 @@ public class SecurityConsole {
 				else{
 					System.out.println("Invalid input");
 				}
+				
+				
 
 			} // while
 

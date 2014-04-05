@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-class SecurityMonitor extends Thread
+class SecurityFireMonitor extends Thread
 {
 	private MessageManagerInterface em = null;	// Interface object to the message manager
 	private String MsgMgrIP = null;				// Message Manager IP address
@@ -21,10 +21,11 @@ class SecurityMonitor extends Thread
 	private Indicator windowIndicator;					// Window indicator
 	private Indicator doorIndicator;					// Door indicator
 	private Indicator smokeIndicator;					// Smoke indicator
+	private int SprinklerState = 0;  					//1-on, 2-ready, 0-off
 	
 
 
-	public SecurityMonitor()
+	public SecurityFireMonitor()
 	{
 		// message manager is on the local system
 		try
@@ -44,7 +45,7 @@ class SecurityMonitor extends Thread
 		} // catch
 	} //Constructor
 
-	public SecurityMonitor( String MsgIpAddress )
+	public SecurityFireMonitor( String MsgIpAddress )
 	{
 		// message manager is not on the local system
 
@@ -149,13 +150,21 @@ class SecurityMonitor extends Thread
 						else if(Msg.GetMessage().equals("Smoke")) smokeIndicator.SetLampColorAndMessage("Smoke Alarm", 3);
 					}
 					
-					
+					else
 					if( Msg.GetMessageId() == Configuration.SPRINKLER_CONTROLLER_ID){
-						 if(Msg.GetMessage().equals("S1")) mw.WriteMessage("Sprinkler was turned on.");
-					  	 else if(Msg.GetMessage().equals("S0")) mw.WriteMessage("Sprinkler was turned off.");
-						 else if(Msg.GetMessage().equals("S2")) mw.WriteMessage("Sprinkler will start at 10 seconds.");
+						 if(Msg.GetMessage().equals("S1")) {
+							 if (SprinklerState != 1) mw.WriteMessage("Sprinkler was turned on.");
+							 SprinklerState = 1;
+						 }
+					  	 else if(Msg.GetMessage().equals("S0")) {
+					  		 if (SprinklerState != 0) mw.WriteMessage("Sprinkler was turned off.");
+					  		 SprinklerState = 0;
+					  	 }
+						 else if(Msg.GetMessage().equals("S2")) {
+							 mw.WriteMessage("Sprinkler will start at 10 seconds.");
+							 SprinklerState = 2;
+						 }
 					}
-					
 					
 					// If the message ID == 99 then this is a signal that the simulation
 					// is to end. At this point, the loop termination flag is set to
@@ -247,7 +256,10 @@ class SecurityMonitor extends Thread
 
 	} // Halt
 	
-
+	public int getSprinklerState() {
+		return  SprinklerState;
+	}
+	
 	public void setSprinkler(int state) {
 		
 		Message msg = null;

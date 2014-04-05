@@ -75,13 +75,13 @@ class SecurityController
 
 			float WinPosX = 0.0f; 	//This is the X position of the message window in terms
 			//of a percentage of the screen height
-			float WinPosY = 0.60f;	//This is the Y position of the message window in terms
+			float WinPosY = 0.5f;	//This is the Y position of the message window in terms
 			//of a percentage of the screen height
 
 			MessageWindow mw = new MessageWindow("Security Controller Status Console", WinPosX, WinPosY);
 
 
-			Indicator armedIndicator= new Indicator ("Disarmed", mw.GetX(), mw.GetY()+mw.Height());
+			Indicator armedIndicator= new Indicator ("Disarmed", mw.GetX()+mw.Width(), mw.GetY());
 
 			mw.WriteMessage("Registered with the message manager." );
 
