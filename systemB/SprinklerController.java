@@ -139,8 +139,11 @@ public class SprinklerController {
 					{
 						if (Msg.GetMessage().equalsIgnoreCase("S1")) 
 						{
-							SprinklerState = 1;
-							mw.WriteMessage("Received turn sprinkler on message" );
+							if (SprinklerState==0) {
+								SprinklerState = 1;
+								mw.WriteMessage("Received turn sprinkler on message" );
+							}
+							
 
 
 						} // if
@@ -156,8 +159,12 @@ public class SprinklerController {
 						
 						if (Msg.GetMessage().equalsIgnoreCase("S2")) 
 						{
-							SprinklerState = 2;
-							mw.WriteMessage("Received  sprinker ready message" );
+							if (SprinklerState==0) {
+								SprinklerState = 2;
+								mw.WriteMessage("Received  sprinker ready message" );
+							}
+							
+							
 							
 						} // if
 
