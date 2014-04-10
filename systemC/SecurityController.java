@@ -10,7 +10,7 @@ class SecurityController
 		Message Msg = null;					// Message object
 		MessageQueue eq = null;				// Message Queue
 		MessageManagerInterface em = null;	// Interface object to the message manager
-		boolean isArmed = false;	// Heater state: false == off, true == on
+		boolean isArmed = false;	
 		int	Delay = 2500;					// The loop delay (2.5 seconds)
 		boolean Done = false;				// Loop termination flag
 
@@ -75,13 +75,13 @@ class SecurityController
 
 			float WinPosX = 0.0f; 	//This is the X position of the message window in terms
 			//of a percentage of the screen height
-			float WinPosY = 0.60f;	//This is the Y position of the message window in terms
+			float WinPosY = 0.5f;	//This is the Y position of the message window in terms
 			//of a percentage of the screen height
 
 			MessageWindow mw = new MessageWindow("Security Controller Status Console", WinPosX, WinPosY);
 
 
-			Indicator armedIndicator= new Indicator ("Disarmed", mw.GetX(), mw.GetY()+mw.Height());
+			Indicator armedIndicator= new Indicator ("Disarmed", mw.GetX()+mw.Width(), mw.GetY());
 
 			mw.WriteMessage("Registered with the message manager." );
 
@@ -139,6 +139,10 @@ class SecurityController
 					else if(Msg.GetMessageId() == Configuration.MOTION_SENSOR_ID){
 						if(isArmed) postMessage(em, "Motion");
 						mw.WriteMessage("Received Motion Alarm" );
+					}
+					else if(Msg.GetMessageId() == Configuration.SMOKE_SENSOR_ID){
+						if(isArmed) postMessage(em, "Smoke");
+						mw.WriteMessage("Received Smoke Alarm" );
 					}
 					else if(Msg.GetMessageId() == 99){
 						Done = true;

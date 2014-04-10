@@ -40,7 +40,19 @@ public class Indicator extends JFrame
 	private Color IluminationColor = Color.black;
 	private Color TextColor = Color.black;
 	private JFrame IndicatorWindow;
+    
+	public Color getIluminationColor() {
+		return IluminationColor;
+	}	
+	private long lastUpdate = System.currentTimeMillis();
+	
+	public long getLastUpdate() {
+		return lastUpdate;
+	}
 
+	public void setLastUpdate(long lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 	/***************************************************************************
 	* Constructor:: Indicator
 	* Purpose: This method sets up a JFrame window and drawing pane with the

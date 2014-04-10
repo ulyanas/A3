@@ -4,7 +4,7 @@ Several Steps to Start SystemA:
 
 0. Go to A3/
 1. Compile all .java file.
-rum command
+run command
 
 	a.javac -d ./bin  *.java
 	
