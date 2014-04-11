@@ -113,7 +113,7 @@ public class ServiceMonitor extends Thread
 				for ( int i = 0; i < qlen; i++ )
 				{
 					Evt = eq.GetMessage();
-                     mw.WriteMessage( "Dummy test - " + Evt.GetMessageId());
+                    // mw.WriteMessage( "Dummy test - " + Evt.GetMessageId());
 					if ( Evt.GetMessageId() == 31 ) // Sensor Pulse
 					{
 						try
