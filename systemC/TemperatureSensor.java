@@ -21,11 +21,14 @@
 *   void PostTemperature(MessageManagerInterface ei, float temperature )
 *
 ******************************************************************************************************************/
-
+package systemC;
 import InstrumentationPackage.*;
 import MessagePackage.*;
 import java.util.*;
 import systemC.ServiceMonitor;
+
+
+
 
 class TemperatureSensor
 {
