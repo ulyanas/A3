@@ -28,6 +28,7 @@
 *	static private void ConfirmMessage(MessageManagerInterface ei, String m )
 *
 ******************************************************************************************************************/
+package systemC;
 import InstrumentationPackage.*;
 import MessagePackage.*;
 import java.util.*;
