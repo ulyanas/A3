@@ -113,7 +113,7 @@ public class ServiceMonitor extends Thread
 				for ( int i = 0; i < qlen; i++ )
 				{
 					Evt = eq.GetMessage();
-
+                     mw.WriteMessage( "Dummy test - " + Evt.GetMessageId());
 					if ( Evt.GetMessageId() == 31 ) // Sensor Pulse
 					{
 						try
@@ -131,7 +131,7 @@ public class ServiceMonitor extends Thread
 								mw.WriteMessage( "Registered new sensor - " + equipDesc);
 							} else { // if it is a existed equipment, update the lastUpdateDate property.
 								installedEquipment.get(equipDesc).SetLampColor(1);
-								
+								installedEquipment.get(equipDesc).setLastUpdate(System.currentTimeMillis());
 								mw.WriteMessage( "Received heartbeat from sensor - " + equipDesc);
 							}
 						} // try
@@ -185,7 +185,7 @@ public class ServiceMonitor extends Thread
 				long timeInterval = 0;
 				for (Entry<String, Indicator> obj : installedEquipment.entrySet()) {
 				    timeInterval = currentTime - obj.getValue().getLastUpdate();
-					if (timeInterval > Delay ) {
+					if (timeInterval > 2 * Delay ) {
 						if (!obj.getValue().getIluminationColor().equals(Color.red)) {
 							obj.getValue().SetLampColorAndMessage(obj.getKey(), 3);
 							mw.WriteMessage( "A sensor was disconnected - " + obj.getKey());					
