@@ -104,6 +104,7 @@ class SecurityController
 
 			while ( !Done )
 			{
+			    ServiceMonitor.detectHeartbeat(em, "SC01 - Security Controller");
 				try
 				{
 					eq = em.GetMessageQueue();
