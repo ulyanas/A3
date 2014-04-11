@@ -19,11 +19,11 @@ public class ServiceMonitor extends Thread
 	
 	public ServiceMonitor()
 	{
-		// event manager is on the local system
+		// message manager is on the local system
 
 		try
 		{
-			// Here we create an event manager interface object. This assumes
+			// Here we create an message manager interface object. This assumes
 			// that the event manager is on the local machine
 
 			em = new MessageManagerInterface();
@@ -46,7 +46,7 @@ public class ServiceMonitor extends Thread
 
 		try
 		{
-			// Here we create an event manager interface object. This assumes
+			// Here we create an message manager interface object. This assumes
 			// that the event manager is NOT on the local machine
 
 			em = new MessageManagerInterface( EvtMgrIP );
@@ -93,7 +93,7 @@ public class ServiceMonitor extends Thread
 
 			while ( !Done )
 			{
-				// Here we get our event queue from the event manager
+				// Here we get our message queue from the message manager
 
 				try
 				{
@@ -103,7 +103,7 @@ public class ServiceMonitor extends Thread
 
 				catch( Exception e )
 				{
-					mw.WriteMessage("Error getting event queue::" + e );
+					mw.WriteMessage("Error getting message queue::" + e );
 
 				} // catch
 
@@ -146,7 +146,7 @@ public class ServiceMonitor extends Thread
 
 					// If the event ID == 99 then this is a signal that the simulation
 					// is to end. At this point, the loop termination flag is set to
-					// true and this process unregisters from the event manager.
+					// true and this process unregisters from the message manager.
 
 					if ( Evt.GetMessageId() == 99 )
 					{
@@ -254,11 +254,11 @@ public class ServiceMonitor extends Thread
 	
   public static void detectHeartbeat(MessageManagerInterface msg, String nameDesc)
 	{
-		// Here we create the event.
+		// Here we create the message.
 
 		Message evt = new Message( (int) 31, nameDesc );
 
-		// Here we send the event to the event manager.
+		// Here we send the message to the message manager.
 
 		try
 		{
@@ -272,6 +272,6 @@ public class ServiceMonitor extends Thread
 
 		} // catch
 
-	} // PostTemperature	
+	} // detectHeartbeat	
 
 } // ServiceMonitor
