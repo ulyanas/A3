@@ -6,13 +6,13 @@ import Configuration.*;
 import java.util.*;
 import java.util.Map.Entry;
 import java.awt.Color;
-// To distinguish between the message manager and the event manager , we call messages as Events 
+ 
  
 public class ServiceMonitor extends Thread
 {
 	private MessageManagerInterface em = null;// Interface object to the event manager ( actually the message manager)
 	private String EvtMgrIP = null;			// Event Manager IP address
-	boolean Registered = true;				// Signifies that this class is registered with an event manager.
+	boolean Registered = true;				// Signifies that this class is registered with an message manager .
 	MessageWindow mw = null;				// This is the message window
 	
 	Map<String,Indicator> installedEquipment;
@@ -24,7 +24,7 @@ public class ServiceMonitor extends Thread
 		try
 		{
 			// Here we create an message manager interface object. This assumes
-			// that the event manager is on the local machine
+			// that the message manager is on the local machine
 
 			em = new MessageManagerInterface();
 		}
@@ -132,7 +132,7 @@ public class ServiceMonitor extends Thread
 							} else { // if it is a existed equipment, update the lastUpdateDate property.
 								installedEquipment.get(equipDesc).SetLampColor(1);
 								installedEquipment.get(equipDesc).setLastUpdate(System.currentTimeMillis());
-								mw.WriteMessage( "Received heartbeat from sensor - " + equipDesc);
+								mw.WriteMessage( "Received heartbeat from equipment(sensor/controller) - " + equipDesc);
 							}
 						} // try
 
