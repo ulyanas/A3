@@ -40,14 +40,13 @@ public class ServiceMonitor extends Thread
 
 	public ServiceMonitor( String EvtIpAddress )
 	{
-		// event manager is not on the local system
+		// message manager is not on the local system
 
 		EvtMgrIP = EvtIpAddress;
 
 		try
 		{
-			// Here we create an message manager interface object. This assumes
-			// that the event manager is NOT on the local machine
+			// Here we create an message manager interface object. 
 
 			em = new MessageManagerInterface( EvtMgrIP );
 		}
