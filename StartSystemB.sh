@@ -2,14 +2,14 @@
 echo Starting ECS System B
 
 echo Security Controller
-java bin/systemB/SecurityController &
+java -jar SystemB_SecurityController.jar &
 
 echo Sprinkler Controller
-java bin/systemB/SprinklerController &
+java -jar SystemB_SprinklerController.jar &
 
 echo Starting Smoke Sensor Console
-java bin/systemB/SmokeSensor &
+java -jar SystemB_SmokeSensor.jar &
 
 echo Security Fire Monitoring Console
-java bin/systemB/SecurityConsole 
+java -jar SystemB_SecurityConsole.jar 
 
