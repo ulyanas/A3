@@ -46,7 +46,7 @@ By launching the system C you only get the empty maintenance console.
 - To stop the maintenance console: input 2 at the maintenance console.
 
 To test the system C there are 2 possible options:
-Option 1) Run the testing script provided by our team.
+Option 1) Run the testing script (TestSystemC.bat) provided by our team.
 For the ease of testing we have created the scripts that would start controllers, monitors and sensors in a specified order.
 Each module will be started in 10 seconds after the previous one.
 That allows to make requests to the maintenance console and see the change of number of devices in the system.
